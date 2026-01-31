@@ -10,7 +10,10 @@ export default function Home() {
   const [defaultView, setDefaultView] = useState(true);
   const [yay, setYay] = useState(false);
 
-  const yesButtonSize = noCount * 20 + 16;
+  const [exploded, setExploded] = useState(false);
+  const [showExplosion, setShowExplosion] = useState(false);
+
+  const yesButtonSize = noCount * 20 + 16 - 20;
 
   function onYesClick() {
     if (confirmYes) {
@@ -31,50 +34,84 @@ export default function Home() {
   function onNoClick() {
     setNoCount(noCount + 1);
 
-    if (noCount == 5) {
+    if (noCount == 10) {
       setDefaultView(false);
+      setConfirmYes(false);
+      setYay(false);
+
+      setShowExplosion(true);
 
       setTimeout(() => {
-        setShowVideo(true);
-      }, 2000);
+        setShowExplosion(false);
+        setExploded(true);
+
+        setTimeout(() => {
+          setShowVideo(true);
+        }, 3500);
+      }, 2500);
     }
   }
 
   return (
-    <div>
-      {defaultView && (
-        <div>
-          <h1>valentine?</h1>
-          <button style={{ fontSize: yesButtonSize }} onClick={onYesClick}>
-            Yes
-          </button>
-          <button onClick={onNoClick}>No</button>
-        </div>
-      )}
+    <div className={`min-h-screen flex items-center justify-center ${exploded ? "bg-white" : "bg-pink-300"}`}>
+      <div className="flex items-center justify-center text-center min-h-screen">
+        {defaultView && (
+          <div className="flex flex-col items-center text-center space-y-3">
+            <h1 className="text-2xl">will you be my valentine?</h1>
 
-      {confirmYes && (
-        <div>
-          <p>REALLY?!??</p>
-        </div>
-      )}
+            <img src="miffy_heart.jpg" width={175} />
 
-      {yay && (
-        <div>
-          <p>yay!</p>
-        </div>
-      )}
+            <div className="flex flex-col items-center space-y-4">
+              <div className="flex items-center space-x-4">
+                <button className="px-3 border bg-blue-600" style={{ fontSize: yesButtonSize }} onClick={onYesClick}>
+                  Yes
+                </button>
 
-      {showVideo && (
-        <div>
-          <video src="/val_vid2.mov" autoPlay width={1500}></video>
-        </div>
-      )}
+                <button className="px-3 border bg-red-700" onClick={onNoClick}>
+                  No
+                </button>
+              </div>
 
-      {showImage && (
-        <div>
-          <img className="mx-auto" width={900} src="/val_yes.png" />
-        </div>
-      )}
+              {/* Appears BELOW buttons */}
+              {confirmYes && <p className="text-8xl">REALLY?!??</p>}
+            </div>
+          </div>
+        )}
+
+        {yay && (
+          <div>
+            <p>yay!</p>
+          </div>
+        )}
+
+        {showVideo && (
+          <video
+            src="/val_vid2.mov"
+            autoPlay
+            className=""
+            width={1500}
+            onEnded={() => {
+              setShowVideo(false);
+              setExploded(false);
+              setNoCount(1);
+              setConfirmYes(false);
+              setYay(false);
+              setDefaultView(true);
+            }}
+          />
+        )}
+        {showImage && (
+          <div>
+            <img className="mx-auto" width={900} src="/val_yes.png" />
+          </div>
+        )}
+        {showExplosion && (
+          <div className="fixed inset-0 flex items-center justify-center pointer-events-none">
+            <img src="/explosion.gif" className="w-96 h-96 object-contain" alt="Explosion" />
+          </div>
+        )}
+        {exploded && !showExplosion && !showVideo && <p className="fixed inset-0 flex items-center justify-center text-sm">bruh</p>}
+      </div>
     </div>
   );
 }
