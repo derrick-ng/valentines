@@ -15,6 +15,20 @@ export default function Home() {
 
   const yesButtonSize = noCount * 20 + 16 - 20;
 
+  const noPhrases = [
+    "No",
+    "No?",
+    "No???",
+    "No!?!?!?!?!??!?!!!?",
+    "Misclick?",
+    "Wrong Button",
+    "bruh",
+    "really :(",
+    "push the other one or else",
+    "im gonna explode if you press no",
+  ];
+  const noPhrase = noPhrases[Math.min(noCount - 1, noPhrases.length - 1)];
+
   function onYesClick() {
     if (confirmYes) {
       setConfirmYes(false);
@@ -63,12 +77,12 @@ export default function Home() {
 
             <div className="flex flex-col items-center space-y-4">
               <div className="flex items-center space-x-4">
-                <button className="px-3 border bg-blue-600" style={{ fontSize: yesButtonSize }} onClick={onYesClick}>
+                <button className="px-3 border bg-blue-600 rounded-3xl" style={{ fontSize: yesButtonSize }} onClick={onYesClick}>
                   Yes
                 </button>
 
-                <button className="px-3 border bg-red-700" onClick={onNoClick}>
-                  No
+                <button className="px-3 border bg-red-700 rounded-3xl" onClick={onNoClick}>
+                  {noPhrase}
                 </button>
               </div>
 
