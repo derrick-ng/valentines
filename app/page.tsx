@@ -13,6 +13,8 @@ export default function Home() {
   const [exploded, setExploded] = useState(false);
   const [showExplosion, setShowExplosion] = useState(false);
 
+  const [entered, setEntered] = useState(false);
+
   const yesButtonSize = noCount * 20 + 16 - 20;
 
   const noPhrases = [
@@ -37,7 +39,7 @@ export default function Home() {
       setTimeout(() => {
         setShowImage(true);
         setYay(false);
-      }, 10000);
+      }, 6000);
 
       setYay(true);
     } else {
@@ -64,6 +66,15 @@ export default function Home() {
         }, 3500);
       }, 2500);
     }
+  }
+
+  if (!entered) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center text-center" onClick={() => setEntered(true)}>
+        <h1 className="text-3xl mb-2">Cat Project</h1>
+        <p className="text-gray-500">click anywhere to continue</p>
+      </div>
+    );
   }
 
   return (
